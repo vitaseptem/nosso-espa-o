@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+  Abra este arquivo no navegador para gerar os ícones PNG do PWA.
+  Clique em cada botão para baixar o ícone correspondente.
+  Salve os arquivos como icon-192.png e icon-512.png nesta mesma pasta.
+-->
+<html>
+<body style="background:#0f0a1e;display:flex;gap:20px;padding:20px;align-items:flex-start">
+<script>
+function makeIcon(size) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  // Background
+  ctx.fillStyle = '#0f0a1e';
+  ctx.beginPath(); ctx.roundRect(0, 0, size, size, size*0.2); ctx.fill();
+  // Outer ring
+  ctx.beginPath(); ctx.arc(size/2, size/2, size*0.38, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(168,85,247,0.5)'; ctx.lineWidth = size*0.02; ctx.stroke();
+  // Inner ring
+  ctx.beginPath(); ctx.arc(size/2, size/2, size*0.26, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(232,121,249,0.35)'; ctx.lineWidth = size*0.015; ctx.stroke();
+  // Stars on orbit
+  const pts = [{cx:0.5,cy:0.18},{cx:0.78,cy:0.32},{cx:0.78,cy:0.68},{cx:0.5,cy:0.82},{cx:0.22,cy:0.68},{cx:0.22,cy:0.32}];
+  pts.forEach(({cx,cy},i)=>{
+    ctx.beginPath(); ctx.arc(cx*size, cy*size, i%2===0?size*0.03:size*0.02, 0, Math.PI*2);
+    ctx.fillStyle = i%2===0?'#fde68a':'#bfdbfe'; ctx.fill();
+  });
+  // Heart emoji
+  ctx.font = `${size*0.3}px serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('❤️', size/2, size/2);
+  return canvas;
+}
+[192, 512].forEach(size => {
+  const canvas = makeIcon(size);
+  document.body.appendChild(canvas);
+  const btn = document.createElement('button');
+  btn.textContent = `Download ${size}x${size}`;
+  btn.style = 'display:block;margin-top:8px;padding:8px 16px;background:#a855f7;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px';
+  btn.onclick = () => { const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download=`icon-${size}.png`; a.click() };
+  document.body.appendChild(btn);
+});
+</script>
+</body>
+</html>
