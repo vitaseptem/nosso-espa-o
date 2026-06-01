@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabase'
 import type { ThoughtGame } from '@/types/database'
 
+type ThoughtResult = 'acertou' | 'errou'
+
 export const thoughtsService = {
   async getAll(): Promise<ThoughtGame[]> {
     const { data } = await supabase
@@ -43,5 +45,3 @@ export const thoughtsService = {
     await supabase.from('thoughts_game').delete().eq('id', id)
   },
 }
-
-type ThoughtResult = 'acertou' | 'errou'

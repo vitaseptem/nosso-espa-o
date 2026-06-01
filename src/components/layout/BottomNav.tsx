@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Home, Clock, Image, Calendar, MessageCircle, Heart } from 'lucide-react'
+import { Home, Clock, Image, Calendar, MessageCircle, Heart, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useNotificationStore } from '@/stores/notificationStore'
 
@@ -9,7 +9,8 @@ const navItems = [
   { to: '/album',      icon: Image,          label: 'Álbum' },
   { to: '/calendario', icon: Calendar,       label: 'Agenda' },
   { to: '/chat',       icon: MessageCircle,  label: 'Chat',  badge: true },
-  { to: '/valentina',  icon: Heart,          label: 'Valentin.' },
+  { to: '/valentina',     icon: Heart,     label: 'Valentin.' },
+  { to: '/configuracoes', icon: Settings,  label: 'Config.' },
 ]
 
 export function BottomNav({ className }: { className?: string }) {

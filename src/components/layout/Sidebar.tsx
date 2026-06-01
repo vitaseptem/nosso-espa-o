@@ -1,8 +1,8 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   Home, Clock, Image, Calendar, Brain, Smile,
-  MessageCircle, Phone, Mail, Globe, Heart, LogOut
+  MessageCircle, Phone, Mail, Globe, Heart, Settings
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Avatar } from '@/components/ui/Avatar'
@@ -20,11 +20,13 @@ const navItems = [
   { to: '/chamada',    icon: Phone,         label: 'Chamada' },
   { to: '/cartas',     icon: Mail,          label: 'Cartas' },
   { to: '/universo',   icon: Globe,         label: 'Universo' },
-  { to: '/valentina',  icon: Heart,         label: 'Valentina' },
+  { to: '/valentina',     icon: Heart,    label: 'Valentina' },
+  { to: '/configuracoes', icon: Settings, label: 'Configurações' },
 ]
 
 export function Sidebar({ className }: { className?: string }) {
-  const { user, logout } = useAuthStore()
+  const { user } = useAuthStore()
+  const navigate = useNavigate()
   const { unreadCount } = useNotificationStore()
 
   return (
@@ -68,16 +70,17 @@ export function Sidebar({ className }: { className?: string }) {
 
       {/* User footer */}
       <div className="px-4 pt-4 border-t border-white/[0.06]">
-        <div className="flex items-center gap-3">
+        <button
+          onClick={() => navigate('/configuracoes')}
+          className="flex items-center gap-3 w-full hover:bg-white/[0.05] rounded-xl px-2 py-1.5 transition-colors group"
+        >
           <Avatar user={user} size="sm" showOnline />
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 text-left">
             <p className="text-sm font-medium text-white truncate">{user?.display_name}</p>
             <p className="text-xs text-white/40 truncate">{user?.role}</p>
           </div>
-          <button onClick={logout} className="text-white/30 hover:text-red-400 transition-colors">
-            <LogOut className="w-4 h-4" />
-          </button>
-        </div>
+          <Settings className="w-3.5 h-3.5 text-white/20 group-hover:text-white/50 transition-colors" />
+        </button>
       </div>
     </aside>
   )
