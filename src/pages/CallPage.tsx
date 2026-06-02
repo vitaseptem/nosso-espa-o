@@ -87,7 +87,7 @@ export function CallPage() {
 
     const pc = peerRef.current
     if (signal.kind === 'answer' && signal.sender_id !== user.id) {
-      await pc.setRemoteDescription(new RTCSessionDescription(signal.payload as RTCSessionDescriptionInit))
+      await pc.setRemoteDescription(new RTCSessionDescription(signal.payload as unknown as RTCSessionDescriptionInit))
       setCallState('active')
       timerRef.current = setInterval(() => setDuration(d => d + 1), 1000)
       await callService.updateStatus(activeCall.id, 'aceita')
@@ -96,7 +96,7 @@ export function CallPage() {
         streamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true })
         streamRef.current.getTracks().forEach(t => pc.addTrack(t, streamRef.current!))
       }
-      await pc.setRemoteDescription(new RTCSessionDescription(signal.payload as RTCSessionDescriptionInit))
+      await pc.setRemoteDescription(new RTCSessionDescription(signal.payload as unknown as RTCSessionDescriptionInit))
       const answer = await pc.createAnswer()
       await pc.setLocalDescription(answer)
       await callService.sendSignal(activeCall.id, user.id, 'answer', answer)
