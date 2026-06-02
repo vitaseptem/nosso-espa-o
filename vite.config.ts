@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 export default defineConfig({
-  base: '/nosso-espa-o/',
+  base: '/',
   plugins: [
     react(),
     VitePWA({
@@ -18,11 +18,11 @@ export default defineConfig({
         background_color: '#0f0a1e',
         display: 'standalone',
         orientation: 'portrait',
-        scope: '/nosso-espa-o/',
-        start_url: '/nosso-espa-o/',
+        scope: '/',
+        start_url: '/',
         icons: [
-          { src: '/nosso-espa-o/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/nosso-espa-o/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+          { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
         ]
       },
       workbox: {

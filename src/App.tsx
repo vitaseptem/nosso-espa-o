@@ -23,7 +23,7 @@ export default function App() {
   useEffect(() => { initialize() }, [initialize])
 
   return (
-    <BrowserRouter basename="/nosso-espa-o">
+    <BrowserRouter>
       <Toaster
         position="top-center"
         toastOptions={{

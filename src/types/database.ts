@@ -203,20 +203,211 @@ export interface Notification {
 export type Database = {
   public: {
     Tables: {
-      app_settings:        { Row: AppSettings; Update: Partial<AppSettings> }
-      users:               { Row: User; Update: Partial<User> }
-      memories:            { Row: Memory; Insert: Omit<Memory,'id'|'created_at'|'updated_at'|'media'|'author'>; Update: Partial<Memory> }
-      memory_media:        { Row: MemoryMedia; Insert: Omit<MemoryMedia,'id'|'created_at'|'url'>; Update: Partial<MemoryMedia> }
-      events:              { Row: CalendarEvent; Insert: Omit<CalendarEvent,'id'|'created_at'|'updated_at'>; Update: Partial<CalendarEvent> }
-      thoughts_game:       { Row: ThoughtGame; Insert: Omit<ThoughtGame,'id'|'created_at'|'author'|'guesser'>; Update: Partial<ThoughtGame> }
-      mood_logs:           { Row: MoodLog; Insert: Omit<MoodLog,'id'|'created_at'|'user'>; Update: Partial<MoodLog> }
-      messages:            { Row: Message; Insert: Omit<Message,'id'|'created_at'|'sender'|'reply_to'|'media_url'>; Update: Partial<Message> }
-      audio_calls:         { Row: AudioCall; Insert: Omit<AudioCall,'id'|'created_at'|'caller'|'callee'>; Update: Partial<AudioCall> }
-      call_signals:        { Row: CallSignal; Insert: Omit<CallSignal,'id'|'created_at'>; Update: never }
-      future_letters:      { Row: FutureLetter; Insert: Omit<FutureLetter,'id'|'created_at'|'author'|'recipient'>; Update: Partial<FutureLetter> }
-      valentina_memories:  { Row: ValentinaMemory; Insert: Omit<ValentinaMemory,'id'|'created_at'|'updated_at'|'media'|'author'>; Update: Partial<ValentinaMemory> }
-      valentina_media:     { Row: ValentinaMedia; Insert: Omit<ValentinaMedia,'id'|'created_at'|'url'>; Update: Partial<ValentinaMedia> }
-      notifications:       { Row: Notification; Insert: Omit<Notification,'id'|'created_at'>; Update: Partial<Notification> }
+      app_settings: {
+        Row: AppSettings
+        Insert: Partial<Omit<AppSettings, 'created_at' | 'updated_at'>>
+        Update: Partial<AppSettings>
+        Relationships: []
+      }
+      users: {
+        Row: User
+        Insert: Partial<Omit<User, 'created_at' | 'updated_at'>>
+        Update: Partial<User>
+        Relationships: []
+      }
+      memories: {
+        Row: Memory
+        Insert: {
+          author_id: string
+          title: string
+          memory_date: string
+          category: MemoryCategory
+          description?: string | null
+          location?: string | null
+          is_favorite?: boolean
+        }
+        Update: Partial<Omit<Memory, 'id' | 'created_at' | 'updated_at' | 'media' | 'author'>>
+        Relationships: []
+      }
+      memory_media: {
+        Row: MemoryMedia
+        Insert: {
+          memory_id: string
+          storage_path: string
+          media_type: MediaType
+          sort_order?: number
+          caption?: string | null
+          width?: number | null
+          height?: number | null
+          duration_sec?: number | null
+          size_bytes?: number | null
+        }
+        Update: Partial<Omit<MemoryMedia, 'id' | 'created_at' | 'url'>>
+        Relationships: []
+      }
+      events: {
+        Row: CalendarEvent
+        Insert: {
+          created_by: string
+          title: string
+          event_type: EventType
+          event_date: string
+          description?: string | null
+          event_time?: string | null
+          is_recurring?: boolean
+          reminder_minutes?: number | null
+          location?: string | null
+          color?: string | null
+        }
+        Update: Partial<Omit<CalendarEvent, 'id' | 'created_at' | 'updated_at'>>
+        Relationships: []
+      }
+      thoughts_game: {
+        Row: ThoughtGame
+        Insert: {
+          author_id: string
+          guesser_id: string
+          secret_answer: string
+          hint?: string | null
+          guess?: string | null
+          result?: ThoughtResult
+          points?: number
+          answered_at?: string | null
+        }
+        Update: Partial<Omit<ThoughtGame, 'id' | 'created_at' | 'author' | 'guesser'>>
+        Relationships: []
+      }
+      mood_logs: {
+        Row: MoodLog
+        Insert: {
+          user_id: string
+          mood: MoodKind
+          log_date?: string
+          note?: string | null
+        }
+        Update: Partial<Omit<MoodLog, 'id' | 'created_at' | 'user'>>
+        Relationships: []
+      }
+      messages: {
+        Row: Message
+        Insert: {
+          sender_id: string
+          message_type: MessageType
+          content?: string | null
+          media_path?: string | null
+          reply_to_id?: string | null
+          is_read?: boolean
+          read_at?: string | null
+        }
+        Update: Partial<Omit<Message, 'id' | 'created_at' | 'sender' | 'reply_to' | 'media_url'>>
+        Relationships: []
+      }
+      audio_calls: {
+        Row: AudioCall
+        Insert: {
+          caller_id: string
+          callee_id: string
+          status: CallStatus
+          started_at?: string
+          accepted_at?: string | null
+          ended_at?: string | null
+          duration_seconds?: number | null
+        }
+        Update: Partial<Omit<AudioCall, 'id' | 'created_at' | 'caller' | 'callee'>>
+        Relationships: []
+      }
+      call_signals: {
+        Row: CallSignal
+        Insert: {
+          call_id: string
+          sender_id: string
+          kind: SignalType
+          payload: Record<string, unknown>
+        }
+        Update: Record<string, never>
+        Relationships: []
+      }
+      future_letters: {
+        Row: FutureLetter
+        Insert: {
+          author_id: string
+          title: string
+          content: string
+          open_date: string
+          recipient_id?: string | null
+          is_opened?: boolean
+          opened_at?: string | null
+        }
+        Update: Partial<Omit<FutureLetter, 'id' | 'created_at' | 'author' | 'recipient'>>
+        Relationships: []
+      }
+      valentina_memories: {
+        Row: ValentinaMemory
+        Insert: {
+          author_id: string
+          title: string
+          category: ValentinaCategory
+          memory_date: string
+          description?: string | null
+          age_years?: number | null
+          age_months?: number | null
+          is_favorite?: boolean
+        }
+        Update: Partial<Omit<ValentinaMemory, 'id' | 'created_at' | 'updated_at' | 'media' | 'author'>>
+        Relationships: []
+      }
+      valentina_media: {
+        Row: ValentinaMedia
+        Insert: {
+          memory_id: string
+          storage_path: string
+          media_type: MediaType
+          sort_order?: number
+          caption?: string | null
+          width?: number | null
+          height?: number | null
+          duration_sec?: number | null
+          size_bytes?: number | null
+        }
+        Update: Partial<Omit<ValentinaMedia, 'id' | 'created_at' | 'url'>>
+        Relationships: []
+      }
+      notifications: {
+        Row: Notification
+        Insert: {
+          user_id: string
+          type: NotificationType
+          title: string
+          data?: Record<string, unknown>
+          body?: string | null
+          is_read?: boolean
+          read_at?: string | null
+        }
+        Update: Partial<Omit<Notification, 'id' | 'created_at'>>
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      user_role: UserRole
+      media_type: MediaType
+      memory_category: MemoryCategory
+      event_type: EventType
+      mood_kind: MoodKind
+      thought_result: ThoughtResult
+      message_type: MessageType
+      call_status: CallStatus
+      signal_type: SignalType
+      valentina_category: ValentinaCategory
+      notification_type: NotificationType
+    }
+    CompositeTypes: {
+      [_ in never]: never
     }
   }
 }
