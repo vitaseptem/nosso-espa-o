@@ -14,6 +14,7 @@ import { CallPage } from './pages/CallPage'
 import { LettersPage } from './pages/LettersPage'
 import { UniversePage } from './pages/UniversePage'
 import { ValentinaPage } from './pages/ValentinaPage'
+import { SettingsPage } from './pages/SettingsPage'
 import { useAuthStore } from './stores/authStore'
 
 export default function App() {
@@ -48,7 +49,8 @@ export default function App() {
           <Route path="/chamada"     element={<CallPage />} />
           <Route path="/cartas"      element={<LettersPage />} />
           <Route path="/universo"    element={<UniversePage />} />
-          <Route path="/valentina"   element={<ValentinaPage />} />
+          <Route path="/valentina"      element={<ValentinaPage />} />
+          <Route path="/configuracoes"  element={<SettingsPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
