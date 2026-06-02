@@ -21,8 +21,8 @@ export default defineConfig({
         scope: '/nosso-espa-o/',
         start_url: '/nosso-espa-o/',
         icons: [
-          { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+          { src: '/nosso-espa-o/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/nosso-espa-o/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
         ]
       },
       workbox: {
