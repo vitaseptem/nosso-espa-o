@@ -18,31 +18,36 @@ export function BottomNav({ className }: { className?: string }) {
 
   return (
     <nav className={cn(
-      'fixed bottom-0 inset-x-0 z-40 bg-space-950/90 backdrop-blur-xl border-t border-white/[0.06]',
-      'flex items-center justify-around px-2 pb-safe-area-inset-bottom',
+      'fixed bottom-0 inset-x-0 z-40',
+      'bg-space-950/95 backdrop-blur-xl border-t border-white/[0.05]',
+      'flex items-stretch',
+      'pb-[env(safe-area-inset-bottom)]',
       className
     )}>
       {navItems.map(item => (
-        <NavLink key={item.to} to={item.to} end={item.to === '/'}>
+        <NavLink key={item.to} to={item.to} end={item.to === '/'} className="flex-1">
           {({ isActive }) => (
-            <div className="flex flex-col items-center gap-0.5 py-3 px-3 relative">
-              <div className={cn(
-                'relative p-1.5 rounded-xl transition-all duration-200',
-                isActive ? 'bg-nebula-purple/20' : ''
-              )}>
+            <div className="flex flex-col items-center gap-1 pt-2 pb-2.5 relative">
+              <div className="relative">
                 <item.icon className={cn(
-                  'w-5 h-5 transition-colors',
-                  isActive ? 'text-nebula-purple' : 'text-white/40'
-                )} />
+                  'w-[22px] h-[22px] transition-all duration-200',
+                  isActive ? 'text-nebula-purple' : 'text-white/35'
+                )} strokeWidth={isActive ? 2.2 : 1.8} />
                 {item.badge && unreadCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-nebula-pink text-white text-[10px] rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-nebula-pink text-white text-[9px] rounded-full flex items-center justify-center font-medium">
                     {unreadCount > 9 ? '9+' : unreadCount}
                   </span>
                 )}
               </div>
-              <span className={cn('text-[10px] transition-colors', isActive ? 'text-nebula-purple' : 'text-white/30')}>
+              <span className={cn(
+                'text-[9px] leading-none transition-colors font-medium tracking-wide',
+                isActive ? 'text-nebula-purple' : 'text-white/25'
+              )}>
                 {item.label}
               </span>
+              {isActive && (
+                <span className="absolute bottom-0 inset-x-3 h-[2px] bg-nebula-purple rounded-full" />
+              )}
             </div>
           )}
         </NavLink>

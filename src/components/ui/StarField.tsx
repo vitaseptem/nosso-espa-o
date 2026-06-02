@@ -4,7 +4,7 @@ interface Star {
   x: number; y: number; r: number; alpha: number; speed: number; phase: number
 }
 
-export function StarField({ count = 120, className = '' }: { count?: number; className?: string }) {
+export function StarField({ count = 80, className = '' }: { count?: number; className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const starsRef = useRef<Star[]>([])
   const rafRef = useRef<number>(0)
@@ -14,15 +14,18 @@ export function StarField({ count = 120, className = '' }: { count?: number; cla
     if (!canvas) return
     const ctx = canvas.getContext('2d')!
 
+    const isMobile = window.matchMedia('(max-width: 768px)').matches
+    const starCount = isMobile ? Math.floor(count * 0.6) : count
+
     const resize = () => {
       canvas.width = canvas.offsetWidth
       canvas.height = canvas.offsetHeight
-      starsRef.current = Array.from({ length: count }, () => ({
+      starsRef.current = Array.from({ length: starCount }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        r: Math.random() * 1.4 + 0.3,
+        r: Math.random() * 1.2 + 0.2,
         alpha: Math.random(),
-        speed: Math.random() * 0.008 + 0.003,
+        speed: Math.random() * 0.006 + 0.002,
         phase: Math.random() * Math.PI * 2,
       }))
     }
@@ -30,7 +33,7 @@ export function StarField({ count = 120, className = '' }: { count?: number; cla
     const draw = (t: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       for (const star of starsRef.current) {
-        const a = 0.3 + 0.7 * Math.abs(Math.sin(t * star.speed + star.phase))
+        const a = 0.25 + 0.6 * Math.abs(Math.sin(t * star.speed + star.phase))
         ctx.beginPath()
         ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2)
         ctx.fillStyle = `rgba(248,250,252,${a})`
@@ -39,10 +42,19 @@ export function StarField({ count = 120, className = '' }: { count?: number; cla
       rafRef.current = requestAnimationFrame(draw)
     }
 
-    resize()
+    const start = () => {
+      resize()
+      rafRef.current = requestAnimationFrame(draw)
+    }
+
     const ro = new ResizeObserver(resize)
     ro.observe(canvas)
-    rafRef.current = requestAnimationFrame(draw)
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(start)
+    } else {
+      start()
+    }
 
     return () => {
       cancelAnimationFrame(rafRef.current)

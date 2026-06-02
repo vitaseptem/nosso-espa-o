@@ -30,7 +30,7 @@ export function AppLayout() {
 
   return (
     <div className="relative min-h-screen bg-cosmic overflow-hidden">
-      <StarField count={100} />
+      <StarField count={70} />
       <div className="relative z-10 flex h-screen">
         <Sidebar className="hidden lg:flex" />
         <main className="flex-1 overflow-y-auto pb-20 lg:pb-0">
