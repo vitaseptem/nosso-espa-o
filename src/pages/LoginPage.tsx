@@ -29,37 +29,28 @@ export function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-cosmic flex items-center justify-center p-6 overflow-hidden">
-      <StarField count={150} />
+    <div className="relative min-h-screen bg-cosmic flex items-center justify-center p-5 overflow-hidden">
+      <StarField count={80} />
 
-      {/* Nebula blur orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-nebula-purple/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-nebula-pink/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 left-1/4 w-56 h-56 bg-nebula-purple/8 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/3 right-1/4 w-56 h-56 bg-nebula-pink/8 rounded-full blur-3xl pointer-events-none" />
 
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="relative z-10 w-full max-w-sm"
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-[360px]"
       >
-        {/* Logo */}
-        <div className="text-center mb-10">
-          <motion.div
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="text-6xl mb-4"
-          >
-            🌌
-          </motion.div>
-          <h1 className="font-display text-3xl font-bold bg-gradient-to-r from-nebula-purple via-nebula-pink to-nebula-blue bg-clip-text text-transparent">
+        <div className="text-center mb-8">
+          <div className="text-5xl mb-3">🌌</div>
+          <h1 className="font-display text-2xl font-bold bg-gradient-to-r from-nebula-purple to-nebula-pink bg-clip-text text-transparent">
             Nosso Universo
           </h1>
-          <p className="text-white/40 mt-2 text-sm">Espaço privado do nosso amor ❤️</p>
+          <p className="text-white/35 mt-1.5 text-sm">Espaço privado do nosso amor</p>
         </div>
 
-        {/* Card */}
-        <div className="bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl rounded-3xl p-8 shadow-card">
-          <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="bg-white/[0.04] border border-white/[0.07] backdrop-blur-xl rounded-2xl p-6 shadow-card">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               label="E-mail"
               type="email"
@@ -71,9 +62,9 @@ export function LoginPage() {
               autoComplete="email"
             />
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-white/70">Senha</label>
+              <label className="text-sm font-medium text-white/60">Senha</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                 <input
                   type={showPass ? 'text' : 'password'}
                   placeholder="••••••••"
@@ -81,21 +72,22 @@ export function LoginPage() {
                   onChange={e => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  className="w-full bg-white/[0.05] border border-white/[0.1] rounded-xl pl-10 pr-10 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:border-nebula-purple/60 transition-all"
+                  style={{ fontSize: '16px' }}
+                  className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl pl-10 pr-10 py-2.5 text-white placeholder:text-white/25 focus:outline-none focus:border-nebula-purple/50 transition-all min-h-[44px]"
                 />
                 <button type="button" onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors">
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/35 hover:text-white/60 transition-colors">
                   {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
             <Button type="submit" size="lg" loading={loading} className="w-full mt-2">
-              Entrar no universo ✨
+              Entrar ✨
             </Button>
           </form>
         </div>
 
-        <p className="text-center text-xs text-white/20 mt-6">
+        <p className="text-center text-xs text-white/20 mt-5">
           Acesso exclusivo e privado 🔒
         </p>
       </motion.div>

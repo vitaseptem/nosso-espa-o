@@ -42,5 +42,20 @@ export default defineConfig({
   ],
   resolve: {
     alias: { '@': path.resolve(__dirname, './src') }
+  },
+  build: {
+    chunkSizeWarningLimit: 400,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-core': ['react', 'react-dom', 'react-router-dom'],
+          'supabase':   ['@supabase/supabase-js'],
+          'motion':     ['framer-motion'],
+          'ui-utils':   ['lucide-react', 'clsx', 'tailwind-merge', 'react-hot-toast'],
+          'date':       ['date-fns', 'date-fns-tz'],
+          'zustand':    ['zustand'],
+        }
+      }
+    }
   }
 })

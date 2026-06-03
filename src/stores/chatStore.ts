@@ -22,12 +22,19 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
   loadMessages: async () => {
     set({ loading: true })
-    const { data } = await supabase
-      .from('messages')
-      .select('*, sender:users!sender_id(*)')
-      .order('created_at', { ascending: true })
-      .limit(200)
-    set({ messages: (data ?? []) as Message[], loading: false })
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*, sender:users!sender_id(*)')
+        .order('created_at', { ascending: true })
+        .limit(200)
+      if (error) throw error
+      set({ messages: (data ?? []) as Message[] })
+    } catch (err) {
+      console.error('loadMessages:', err)
+    } finally {
+      set({ loading: false })
+    }
   },
 
   sendMessage: async (content, senderId) => {
