@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { memoriesService } from '@/services/memoriesService'
+import { withTimeout } from '@/lib/utils'
 import type { Memory } from '@/types/database'
 import toast from 'react-hot-toast'
 
@@ -9,9 +10,16 @@ export function useMemories() {
 
   const load = useCallback(async () => {
     setLoading(true)
-    try { setMemories(await memoriesService.getAll()) }
-    catch { toast.error('Erro ao carregar memórias') }
-    finally { setLoading(false) }
+    try {
+      setMemories(await withTimeout(memoriesService.getAll()))
+    } catch (err) {
+      const msg = err instanceof Error && err.message.includes('timeout')
+        ? 'Conexão lenta — tente novamente'
+        : 'Erro ao carregar memórias'
+      toast.error(msg)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => { load() }, [load])

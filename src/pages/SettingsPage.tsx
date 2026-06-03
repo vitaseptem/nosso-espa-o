@@ -66,15 +66,22 @@ export function SettingsPage() {
     try {
       const ext = file.name.split('.').pop()
       const path = `avatars/${user.id}.${ext}`
-      const { error } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from(STORAGE_BUCKETS.AVATARS)
         .upload(path, file, { upsert: true })
-      if (error) throw error
-      const url = await getStorageUrl(STORAGE_BUCKETS.AVATARS, path)
-      await updateProfile({ avatar_url: url })
+      if (uploadError) throw uploadError
+
+      // Try public URL first (never expires); fall back to 7-day signed URL
+      const { data: pub } = supabase.storage.from(STORAGE_BUCKETS.AVATARS).getPublicUrl(path)
+      let avatarUrl = pub?.publicUrl ?? ''
+      if (!avatarUrl || avatarUrl.includes('undefined')) {
+        avatarUrl = await getStorageUrl(STORAGE_BUCKETS.AVATARS, path)
+      }
+
+      await updateProfile({ avatar_url: avatarUrl })
       toast.success('Foto atualizada! 📷')
     } catch {
-      toast.error('Erro ao enviar foto')
+      toast.error('Erro ao enviar foto — verifique as permissões do bucket')
     } finally {
       setUploadingAvatar(false)
     }

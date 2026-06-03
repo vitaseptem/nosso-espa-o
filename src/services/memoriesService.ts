@@ -92,10 +92,14 @@ async function resolveMediaUrls(memories: Memory[], bucket: string): Promise<Mem
     memories.map(async (m) => {
       if (!m.media?.length) return m
       const media = await Promise.all(
-        m.media.map(async (item) => ({
-          ...item,
-          url: await getStorageUrl(bucket, item.storage_path),
-        }))
+        m.media.map(async (item) => {
+          try {
+            const url = await getStorageUrl(bucket, item.storage_path)
+            return { ...item, url }
+          } catch {
+            return { ...item, url: '' }
+          }
+        })
       )
       return { ...m, media }
     })

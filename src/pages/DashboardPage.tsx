@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/Badge'
 import { PageLoader } from '@/components/ui/Spinner'
 import {
   calculateTimeTogetherFromString, formatRelativeDate,
-  getNextOccurrence, daysUntil, MOOD_EMOJIS, EVENT_TYPE_LABELS
+  getNextOccurrence, daysUntil, MOOD_EMOJIS, EVENT_TYPE_LABELS, withTimeout
 } from '@/lib/utils'
 import type { CalendarEvent, Memory, MoodLog } from '@/types/database'
 import { NavLink } from 'react-router-dom'
@@ -36,14 +36,16 @@ export function DashboardPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const [events, memories, moods] = await Promise.all([
+        const [events, memories, moods] = await withTimeout(Promise.all([
           eventsService.getUpcoming(4),
           memoriesService.getAll().then(m => m.slice(0, 4)),
           moodService.getTodayForBoth(),
-        ])
+        ]))
         setUpcomingEvents(events)
         setRecentMemories(memories)
         setTodayMoods(moods)
+      } catch {
+        // Show empty state on error/timeout instead of infinite spinner
       } finally {
         setLoading(false)
       }

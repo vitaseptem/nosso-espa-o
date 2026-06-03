@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { eventsService } from '@/services/eventsService'
+import { withTimeout } from '@/lib/utils'
 import type { CalendarEvent } from '@/types/database'
 import toast from 'react-hot-toast'
 
@@ -9,9 +10,16 @@ export function useEvents() {
 
   const load = useCallback(async () => {
     setLoading(true)
-    try { setEvents(await eventsService.getAll()) }
-    catch { toast.error('Erro ao carregar eventos') }
-    finally { setLoading(false) }
+    try {
+      setEvents(await withTimeout(eventsService.getAll()))
+    } catch (err) {
+      const msg = err instanceof Error && err.message.includes('timeout')
+        ? 'Conexão lenta — tente novamente'
+        : 'Erro ao carregar eventos'
+      toast.error(msg)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => { load() }, [load])

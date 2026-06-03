@@ -7,6 +7,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function withTimeout<T>(promise: Promise<T>, ms = 12000): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`timeout after ${ms}ms`)), ms)
+    )
+  ])
+}
+
 export function formatDate(date: string | Date, pattern = 'dd/MM/yyyy'): string {
   const d = typeof date === 'string' ? parseISO(date) : date
   return format(d, pattern, { locale: ptBR })

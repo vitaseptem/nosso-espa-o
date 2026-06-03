@@ -35,7 +35,7 @@ export const STORAGE_BUCKETS = {
   AVATARS:   'avatars',
 } as const
 
-export async function getStorageUrl(bucket: string, path: string): Promise<string> {
-  const { data } = await supabase.storage.from(bucket).createSignedUrl(path, 3600)
+export async function getStorageUrl(bucket: string, path: string, expiresIn = 86400 * 7): Promise<string> {
+  const { data } = await supabase.storage.from(bucket).createSignedUrl(path, expiresIn)
   return data?.signedUrl ?? ''
 }
